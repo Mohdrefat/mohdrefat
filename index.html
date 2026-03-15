@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ongoing Charity - Mohamed Rifaat</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: #161616;
+            --accent-color: #c9a227;
+            --text-main: #ffffff;
+            --text-dim: #b3b3b3;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Cairo', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            direction: rtl;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #333;
+        }
+
+        h1 { font-size: 1.5rem; color: var(--accent-color); margin-bottom: 0.5rem; }
+        .father-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 1.5rem; }
+        
+        #dua-display {
+            min-height: 60px;
+            color: var(--text-dim);
+            font-style: italic;
+            margin-bottom: 2rem;
+            transition: opacity 0.5s ease;
+        }
+
+        .player-container {
+            background: #222;
+            padding: 1rem;
+            border-radius: 15px;
+        }
+
+        audio { width: 100%; filter: invert(100%); opacity: 0.8; }
+
+        .footer-note {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>صدقة جارية عن روح المرحوم بإذن الله</h1>
+    <div class="father-name">محمد رفعت لطفي شاكر أبو العافية</div>
+    
+    <div id="dua-display">اللهم اغفر له وارحمه وعافه واعف عنه</div>
+
+    <div class="player-container">
+        <audio controls autoplay>
+            <source src="https://backup.qurango.net/radio/tarteel" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
+    <div class="footer-note">BrosTec Protocol V1.0 - Quran Stream Project</div>
+</div>
+
+<script>
+    const duas = [
+        "اللهم اغفر له وارحمه وعافه واعف عنه وأكرم نزله",
+        "اللهم جازه عن الإحسان إحساناً وعن الإساءة عفواً وغفراناً",
+        "اللهم آنس وحدته وآنس وحشته وآنس غربته",
+        "اللهم اجعل قبره روضة من رياض الجنة ولا تجعله حفرة من حفر النار",
+        "اللهم عامله بما أنت أهله ولا تعامله بما هو أهله",
+        "اللهم املأ قبره بالرضا والنور والفسحة والسرور"
+    ];
+
+    const duaElement = document.getElementById('dua-display');
+    
+    function changeDua() {
+        duaElement.style.opacity = 0;
+        setTimeout(() => {
+            const randomIndex = Math.floor(Math.random() * duas.length);
+            duaElement.textContent = duas[randomIndex];
+            duaElement.style.opacity = 1;
+        }, 500);
+    }
+
+    // Change Dua every 10 seconds
+    setInterval(changeDua, 10000);
+</script>
+
+</body>
+</html>
