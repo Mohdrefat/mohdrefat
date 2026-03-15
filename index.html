@@ -21,45 +21,57 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
             direction: rtl;
         }
 
         .container {
             background-color: var(--card-bg);
-            padding: 2rem;
+            padding: 2.5rem;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.7);
             text-align: center;
             width: 90%;
             max-width: 500px;
             border: 1px solid #333;
         }
 
-        h1 { font-size: 1.5rem; color: var(--accent-color); margin-bottom: 0.5rem; }
-        .father-name { font-weight: 700; font-size: 1.2rem; margin-bottom: 1.5rem; }
+        h1 { font-size: 1.3rem; color: var(--accent-color); margin-bottom: 0.5rem; font-weight: 300; }
+        .father-name { font-weight: 700; font-size: 1.4rem; margin-bottom: 1.5rem; color: #fff; }
         
         #dua-display {
-            min-height: 60px;
+            min-height: 80px;
             color: var(--text-dim);
             font-style: italic;
             margin-bottom: 2rem;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.8s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.6;
         }
 
         .player-container {
             background: #222;
-            padding: 1rem;
+            padding: 1.5rem;
             border-radius: 15px;
+            border: 1px dashed #444;
         }
 
-        audio { width: 100%; filter: invert(100%); opacity: 0.8; }
+        #status-text {
+            font-size: 0.85rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        audio { width: 100%; filter: invert(100%); opacity: 0.9; }
 
         .footer-note {
             margin-top: 2rem;
-            font-size: 0.8rem;
-            color: #555;
+            font-size: 0.75rem;
+            color: #444;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -72,38 +84,60 @@
     <div id="dua-display">اللهم اغفر له وارحمه وعافه واعف عنه</div>
 
     <div class="player-container">
-        <audio controls autoplay>
+        <p id="status-text">انقر على زر التشغيل لبدء البث المباشر</p>
+        <audio id="main-player" controls>
             <source src="https://backup.qurango.net/radio/tarteel" type="audio/mpeg">
+            <source src="https://live.mp3quran.net/radio/maher_al_muaiqly" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
     </div>
 
-    <div class="footer-note">BrosTec Protocol V1.0 - Quran Stream Project</div>
+    <div class="footer-note">BrosTec Protocol - Code Version 1.1</div>
 </div>
 
 <script>
+    // --- Array of Supplications (Duas) ---
     const duas = [
         "اللهم اغفر له وارحمه وعافه واعف عنه وأكرم نزله",
         "اللهم جازه عن الإحسان إحساناً وعن الإساءة عفواً وغفراناً",
         "اللهم آنس وحدته وآنس وحشته وآنس غربته",
         "اللهم اجعل قبره روضة من رياض الجنة ولا تجعله حفرة من حفر النار",
         "اللهم عامله بما أنت أهله ولا تعامله بما هو أهله",
-        "اللهم املأ قبره بالرضا والنور والفسحة والسرور"
+        "اللهم املأ قبره بالرضا والنور والفسحة والسرور",
+        "اللهم إنه كان لكتابك تالياً وسامعاً فشفع فيه القرآن",
+        "اللهم ارحمه فوق الأرض وتحت الأرض ويوم العرض عليك"
     ];
 
     const duaElement = document.getElementById('dua-display');
-    
+    const player = document.getElementById('main-player');
+    const status = document.getElementById('status-text');
+
+    // Function to rotate Duas
     function changeDua() {
         duaElement.style.opacity = 0;
         setTimeout(() => {
             const randomIndex = Math.floor(Math.random() * duas.length);
             duaElement.textContent = duas[randomIndex];
             duaElement.style.opacity = 1;
-        }, 500);
+        }, 800);
     }
 
-    // Change Dua every 10 seconds
-    setInterval(changeDua, 10000);
+    // Change Dua every 12 seconds
+    setInterval(changeDua, 12000);
+
+    // Handling Audio Status
+    player.onplay = () => {
+        status.textContent = "البث المباشر يعمل الآن.. تقبل الله منا ومنكم";
+    };
+
+    player.onerror = () => {
+        status.textContent = "جاري محاولة الاتصال بسيرفر احتياطي...";
+        player.src = "https://live.mp3quran.net/radio/maher_al_muaiqly";
+        player.load();
+        player.play().catch(e => {
+            status.textContent = "يرجى النقر على Play لبدء التشغيل";
+        });
+    };
 </script>
 
 </body>
